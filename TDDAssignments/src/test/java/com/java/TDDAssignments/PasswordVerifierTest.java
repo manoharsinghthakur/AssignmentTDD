@@ -6,7 +6,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-
+import com.java.TDDAssignments.PasswordVerifier;
 
 public class PasswordVerifierTest {
 
@@ -25,41 +25,37 @@ public class PasswordVerifierTest {
 	}
 	
 	@Test
-	public void shouldReturnExceptionWithMessageIfPasswordIsLessThan8(){
+	public void shouldReturnExceptionWithMessageIfPasswordHasOnlyLowerCaseAndLengthLessThanEight(){
 		expectedException.expect(RuntimeException.class);
-		expectedException.expectMessage("Password length should be greater than 8");
+		expectedException.expectMessage("Password should have atleast one lower case or one digit or length greater than 8");
 		createPasswordverifier().verify("pass");
 	}
-	
-	@Test
-	public void shouldReturnExceptionWithMessageIfPasswordNotHaveAtleastOneUpperCase(){
-		expectedException.expect(RuntimeException.class);
-		expectedException.expectMessage("Password must has atleast one upper case");
-		createPasswordverifier().verify("passwords");
-	}
-	
+		
 	@Test
 	public void shouldReturnExceptionWithMessageIfPasswordNotHaveAtleastOneLowerCase(){
 		expectedException.expect(RuntimeException.class);
-		expectedException.expectMessage("Password must hase atleast one lower case");
+		expectedException.expectMessage("Password must have atleast one lower case");
 		createPasswordverifier().verify("PASSWORDS");
 	}
-	
-	@Test
-	public void shouldReturnExceptionWithMessageIfPasswordNotHaveAtleastOneNumber(){
-		expectedException.expect(RuntimeException.class);
-		expectedException.expectMessage("Password has atleast one number");
-		createPasswordverifier().verify("Passwords");
-	}
-	
-	@Test
-	public void passwordShouldPassAllCondition(){
 		
+	
+	@Test
+	public void passwordShouldPassIfPassingLowerAndUpperCaseWithDigitAndMaitainLegth(){
 		Assert.assertEquals("password is ok", createPasswordverifier().verify("passworD11"));
-		Assert.assertEquals("password is ok", createPasswordverifier().verify("pD1"));
+		}
+	
+	@Test
+	public void passwordShouldPassIfPassingLowerAndUpperCaseAndDigitWithoutMaintainingLength(){
+		Assert.assertEquals("password is ok", createPasswordverifier().verify("Pass12"));
 	}
 	
-	
-	
-	
+	@Test
+	public void passwordShouldPassIfPassingLowerAndUpperCaseWithoutMaintainingLength(){
+		Assert.assertEquals("password is ok", createPasswordverifier().verify("Pass"));
+	}
+
+	@Test
+	public void passwordShouldPassIfPassingLowerCaseAndNumberWithoutMaintainingLength(){
+		Assert.assertEquals("password is ok", createPasswordverifier().verify("pass12"));
+	}
 }

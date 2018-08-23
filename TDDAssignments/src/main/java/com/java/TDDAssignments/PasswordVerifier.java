@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class PasswordVerifier {
-
+//
 	public String verify(String string){
 		boolean isDigit = false;
 		boolean isUpperCase = false;
 		boolean isLowerCase = false;
-	
+		int count=0;
 		char[] ch = string.toCharArray();
 		for(int i=0;i<ch.length;i++){
 			if(Character.isUpperCase(ch[i])) 
@@ -21,15 +21,22 @@ public class PasswordVerifier {
 				isDigit=true;
 		}
 		
-		if(!isUpperCase || !isDigit || !isLowerCase){
-			
-		if(string.isEmpty())  throw new RuntimeException("Password shouldn't be empty");
-		else if(string.length()<8)  throw new RuntimeException("Password length should be greater than 8");
-		else if(isLowerCase==false)  throw new RuntimeException("Password must hase atleast one lower case");
-		else if(isUpperCase==false)  throw new RuntimeException("Password must has atleast one upper case");
-		else if(isDigit==false)  throw new RuntimeException("Password has atleast one number");
+		if(!string.isEmpty()){
+			if(isLowerCase){
+				if(isUpperCase) count++;
+				if(isDigit)   count++;
+				if(string.length()>8) count++;
+			}
+			else{
+				throw new RuntimeException("Password must have atleast one lower case");
+			}
 		}
-		return "password is ok";
-
+		else { 
+			throw new RuntimeException("Password shouldn't be empty"); }
+		
+		if(count<1){
+			throw new RuntimeException("Password should have atleast one lower case or one digit or length greater than 8");
+		}
+		return "password is ok";	
 	}
 }
